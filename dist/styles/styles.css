@@ -1,0 +1,99 @@
+/*******
+*
+*       ALL
+*
+********/
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
+
+.container:not(#login), .container-fluid {
+    display:none;
+}
+
+.message.alert {
+    display: none;
+    margin: auto;
+    width: 500px;
+}
+
+
+/*******
+*
+*       LOGIN / REGISTER
+*
+********/
+
+.form-sign {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-sign .form-sign-heading,
+.form-sign .checkbox {
+    margin-bottom: 10px;
+}
+.form-sign .checkbox {
+    font-weight: normal;
+}
+.form-sign .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-sign .form-control:focus {
+    z-index: 2;
+}
+.form-sign input.topRadius  {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.form-sign input.bottomRadius {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/*******
+*
+*       WALL / PROFIL
+*
+********/
+
+.bold {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.right { float: right; }
+.textBtn {
+    content: "";
+}
+.refreshTweetWall, .editProfil {
+    display: inline-block;
+}
+.deleteUser:hover .textBtn:after, .deleteTweet:hover .textBtn:after {
+    content: "Delete";
+}
+.editProfil:hover .textBtn:after {
+    content: "Edit";
+}
+.logout:hover .textBtn:after {
+    content: "Logout";
+}
+.refreshTweetWall:hover .textBtn:after {
+    content: "Refresh";
+}
+.sub-text {
+    display: block;
+    color:#aaa;
+    font-family: verdana, sans-serif;
+    font-size:11px;
+}
+.tweet

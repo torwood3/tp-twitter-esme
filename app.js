@@ -37,6 +37,15 @@ var userRoutes = require('./userRoutes')();
 
 app
     .use('/', routes)
+    .use(function(req, res, next){
+        if( req.method == 'GET') { next(); return; }
+        if( req.get('Content-Type').indexOf("json") == -1) {
+            res.status(415).json({error: "Expected 'Content-Type: \"application/json; charset=utf-8\"' "}).end();
+            return;
+        } else {
+            next();
+        }
+    })
     .use('/tweet', tweetRoutes)
     .use('/user', userRoutes);
 

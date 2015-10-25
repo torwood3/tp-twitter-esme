@@ -19,7 +19,12 @@ hashCode = function(str) {
 };
 
 var db = {
-    userList: [], tweetList: [], loggedUserList: [], hashCode: hashCode
+    userList: [], tweetList: [], loggedUserList: [], hashCode: hashCode,
+    login: function(name){
+        var key = hashCode(name + new Date());
+        this.loggedUserList[key] = name;
+        return key;
+    }
 };
 
 module.exports = db;

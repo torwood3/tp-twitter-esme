@@ -7,15 +7,123 @@
     <link rel="stylesheet" href="styles/styles.css"/>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
+    <!-- ALERT MESSAGE -->
+    <div class="message alert all"> </div>
 
-        </div>
+    <!-- BEGIN LOGIN PAGE -->
+    <div class="container" id="login">
+        <form class="form-sign">
+            <h2 class="form-sign-heading">Please sign in</h2>
+            <label for="inputLoginEmail" class="sr-only">Email address</label>
+            <input id="inputLoginEmail" class="form-control topRadius" placeholder="Email address" required="" autofocus="" type="email">
+            <label for="inputLoginPassword" class="sr-only">Password</label>
+            <input id="inputLoginPassword" class="form-control bottomRadius" placeholder="Password" required="" type="password">
 
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            Not registered yet ! <a href="#" class="register changePage" >Let's go</a>
+        </form>
     </div>
+    <!-- END LOGIN PAGE -->
+
+    <!-- BEGIN REGISTER PAGE -->
+    <div class="container" id="register">
+        <form class="form-sign">
+            <h2 class="form-sign-heading">Please sign up</h2>
+            <div class="form-group">
+                <label for="inputRegisterLastname" class="sr-only">Email address</label>
+                <input id="inputRegisterLastname" class="form-control topRadius" placeholder="Last name" required="" autofocus="" type="text">
+                <label for="inputRegisterFirstname" class="sr-only">Email address</label>
+                <input id="inputRegisterFirstname" class="form-control bottomRadius" placeholder="First name" required="" autofocus="" type="text">
+            </div>
+            <div class="form-group">
+                <label for="inputRegisterEmail" class="sr-only">Email address</label>
+                <input id="inputRegisterEmail" class="form-control topRadius" placeholder="Email address" required="" autofocus="" type="email">
+                <label for="inputRegisterPassword" class="sr-only">Password</label>
+                <input id="inputRegisterPassword" class="form-control bottomRadius" placeholder="Password" required="" type="password">
+            </div>
+            <div class="form-group">
+                <label for="inputConfirmRegisterPassword" class="sr-only">Confirm Password</label>
+                <input id="inputConfirmRegisterPassword" class="form-control " placeholder="Confirm Password" required="" type="password">
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            Already done ! <a href="#" class="login changePage" >Log me</a>
+        </form>
+    </div>
+    <!-- END REGISTER PAGE -->
+
+    <!-- BEGIN WALL PAGE -->
+    <div class="container-fluid" id="wall">
+             <div class="row">
+                 <!-- Left column -->
+                 <div class="col-md-3">
+                     <div class="panel panel-default">
+                         <div class="panel-heading">
+                             <h3 class="panel-title">Profil
+                                 <button class="btn btn-default btn-xs editProfil right"><span class="glyphicon glyphicon-edit"></span> <span class="textBtn"></span></button>
+                             </h3>
+                         </div>
+                         <div class="panel-body">
+                             <div class="row emailProfil">
+                                 <div class="col-md-6 bold">Email : </div>
+                                 <div class="col-md-6 profil"></div>
+                             </div>
+                             <div class="row firstnameProfil">
+                                 <div class="col-md-6 bold">First name : </div>
+                                 <div class="col-md-6 profil"></div>
+                             </div>
+                             <div class="row lastnameProfil">
+                                 <div class="col-md-6 bold">Last name : </div>
+                                 <div class="col-md-6 profil"></div>
+                             </div>
+                         </div>
+                         <div class="panel-footer">
+                             <button class="btn btn-danger btn-xs deleteUser"><span class="glyphicon glyphicon-remove"></span> <span class="textBtn"></span></button>
+                             <button class="btn btn-warning btn-xs logout right"><span class="glyphicon glyphicon-log-out"></span> <span class="textBtn"></span></button>
+
+                         </div>
+                     </div>
+                 </div>
+
+                 <!-- Center column -->
+                 <div class="col-md-6">
+                     <!-- ALERT MESSAGE -->
+                     <div class="message alert tweet"> </div>
+
+                     <h2>Tweets List !
+                            <button class="btn btn-default refreshTweetWall right"><span class="glyphicon glyphicon-refresh"></span> <span class="textBtn"></span></button>
+                     </h2>
+                     <div class="panel">
+                         <ul class="list-group tweetWall">
+                         </ul>
+                     </div>
+                 </div>
+
+                 <!-- Right column -->
+                 <div class="col-md-3">
+                     <div class="panel panel-primary">
+                         <div class="panel-heading">
+                             <h3 class="panel-title">Post a tweet !</h3>
+                         </div>
+                         <form role="form" id="formPostTweet">
+                             <div class="panel-body">
+                                 <textarea name="inputTweet" rows="4" class="form-control"></textarea>
+                             </div>
+                             <div class="panel-footer">
+                                 <button class="btn btn-primary">Tweet</button>
+                                 <div class="right"><span id="textLenght"></span>/140</div>
+                             </div>
+                         </form>
+                     </div>
+
+                 </div>
+             </div>
+    </div>
+    <!-- END WALL PAGE -->
 
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="scripts/main.js"></script>
+
 </body>
 </html>

@@ -9,13 +9,30 @@ module.exports = function() {
 
     var router = express.Router();
 
-    //GetALL tweet, on revoie le tableau
+    function checkKey(req, res, next){
+        if(req.params.key ) {
+            var username = db.loggedUserList[req.params.key];
+
+            if( username !== undefined ) {
+                req.params.username = username;
+                next();
+                return;
+            }
+        }
+        res.status(401).json({error: "Please login !"}).end();
+    }
+
     router.get('/', function (req, res) {
         res.json(db.tweetList).end();
     });
 
-    //GetMyTweet, on check la key pour avoir l'id puis on chercje les twwet du gars
-    router.get('/myTweets/:key', function(req, res){
+    //Get tweets
+    router.get('/:key', checkKey, function (req, res) {
+        res.json(db.tweetList).end();
+    });
+
+    //Get user tweets
+    router.get('/:key/myTweets', checkKey, function(req, res){
         if(!req.params.key ) res.status(401);
         var key = req.params.key;
         var username = db.loggedUserList[key];
@@ -29,43 +46,38 @@ module.exports = function() {
     });
 
 
-    //create, ajout d'un tweet a la liste
-    router.put('/:key', function(req, res){
-        if(!req.params.key ) res.status(401);
-        var key = req.params.key;
-        var username = db.loggedUserList[key];
-        req.body.tweet.id = db.tweetList.length;
-        req.body.tweet.username = username;
-        db.tweetList.push(req.body.tweet);
-        res.json({id: db.tweetList.length}).end();
-    });
-
-    //Edit, si c'est l'auteur ok pour l'edit
-    router.post('/:key/:id', function(req, res){
-        if(!req.params.key ) res.status(401);
-        var key = req.params.key;
-        var username = db.loggedUserList[key];
-
-        if( db.tweetList[req.params.id].username == username ){
-            db.tweetList[req.params.id] = req.body.tweet;
-            res.end();
-        } else {
-            res.status(404).end();
-        }
-    });
-
-    //DeleteMyTweet, si c'est l'auteur ok pour le delete
-    router.delete('/:key/:id', function(req, res){
-        if(!req.params.key ) res.status(401);
-        var key = req.params.key;
-        var username = db.loggedUserList[key];
-        if( db.tweetList[req.params.id].username == username ){
-            delete db.tweetList[req.params.id];
-            res.end();
-        } else {
-            res.status(404).end();
+    //Create tweet
+    router.put('/:key', checkKey, function(req, res){
+        var tweet = req.body.tweet;
+        if (tweet.message == "") {
+            res.status(400).json({error: "Tweet data not comply"}).end();
+            return;
         }
 
+
+        tweet.id = ( db.tweetList.length != 0 ? db.tweetList[db.tweetList.length -1].id + 1 : 0);
+        tweet.date = new Date();
+        tweet.username = req.params.username;
+        db.tweetList.push(tweet);
+        res.json({tweet : tweet, message:"Tweet send with success !!"}).end();
+    });
+
+    //Delete
+    router.delete('/:key/:id', checkKey, function(req, res){
+        var found = false;
+        db.tweetList.forEach(function(tweet, index){
+            if (req.params.id == tweet.id) {
+                if (tweet.username != req.params.username) {
+                    res.status(401).json({error: "You are not the author"}).end();
+                } else {
+                    db.tweetList.splice( index, 1);
+                    res.json({message: "Tweet deleted"}).end();
+                }
+                found = true;
+             }
+        });
+        if (!found)
+            res.status(400).json({error: "Tweet ID doesn't match"}).end();
     });
 
     return router;
