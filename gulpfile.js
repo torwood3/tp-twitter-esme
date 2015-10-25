@@ -7,7 +7,7 @@ var runSequence = require('run-sequence');
 
 // Lint JavaScript
 gulp.task('jshint', function () {
-  return gulp.src('dist/scripts/*.js')
+  return gulp.src('dist/scripts/main.js')
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish'));
 });
@@ -23,13 +23,24 @@ gulp.task('scripts', function () {
     .pipe($.size({title: 'scripts'}));
 });
 
-gulp.task('watch', function(){
-  gulp.watch(['dist/scripts/*.js'], ['scripts']);
+// Concatenate and minify CSS
+gulp.task('css', function () {
+  gulp.src('dist/styles/styles.css')
+      .pipe($.csso())
+      .pipe($.concat('styles.min.css'))
+      .pipe(gulp.dest('dist/styles/'))
+      .pipe($.size({title: 'css'}));
+
+});
+
+gulp.task('watch', function() {
+  gulp.watch("dist/scripts/main.js", ['scripts']);
+  gulp.watch("dist/styles/styles.css", ['css']);
 });
 
 // Build production files, the default task
 gulp.task('default', function (cb) {
   runSequence(
     'jshint',
-    'scripts', cb);
+    'scripts', 'css', cb);
 });

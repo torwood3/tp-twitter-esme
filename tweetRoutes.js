@@ -22,10 +22,6 @@ module.exports = function() {
         res.status(401).json({error: "Please login !"}).end();
     }
 
-    router.get('/', function (req, res) {
-        res.json(db.tweetList).end();
-    });
-
     //Get tweets
     router.get('/:key', checkKey, function (req, res) {
         res.json(db.tweetList).end();
@@ -33,15 +29,11 @@ module.exports = function() {
 
     //Get user tweets
     router.get('/:key/myTweets', checkKey, function(req, res){
-        if(!req.params.key ) res.status(401);
-        var key = req.params.key;
-        var username = db.loggedUserList[key];
-        var result = [];
-        result.push(db.tweetList.filter(
-            function(tweet){
-                return tweet.username == username
-            })
-        );
+
+        var result = db.tweetList.filter( function(tweet){
+                return tweet.username == req.params.username
+            });
+
         res.json(result).end();
     });
 

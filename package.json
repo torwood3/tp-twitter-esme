@@ -16,6 +16,7 @@
     "express": "^4.13.1",
     "gulp": "^3.8.5",
     "gulp-concat": "^2.5.2",
+    "gulp-csso": "^1.0.1",
     "gulp-jshint": "^1.6.3",
     "gulp-load-plugins": "^0.10.0",
     "gulp-size": "^1.0.0",

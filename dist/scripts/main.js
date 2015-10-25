@@ -17,13 +17,14 @@ $().ready(function(){
     $(".logout").click(logout);
     $(".deleteUser").click(deleteUser);
 
-    $("form#formPostTweet textarea").keypress(textLimitationCharacter);
-    $("form#formPostTweet textarea").blur(textLimitationCharacter);
+    $("form#formPostTweet textarea").on('keyup keypress blur change', textLimitationCharacter);
 
     $("form#formPostTweet").submit(sendTweet);
-    $(".refreshTweetWall").click(refreshTweets);
+    $("#wall h2").on('click', 'button.refreshTweetWall',refreshTweets);
 
     $('.tweetWall').on('click', 'button.deleteTweet', deleteTweet);
+    $('#wall').on('click', 'button.myTweet', showMyTweet);
+    $('#wall').on('click', 'button.theWall', refreshTweets);
 
     /*******
      *      Functions
@@ -174,6 +175,8 @@ $().ready(function(){
             dataType: "json",
             url: urlDomain + "tweet/" + user.key
         }).done(function (jqXHR) {
+            $("form#formPostTweet textarea").val("");
+            textLimitationCharacter();
             showAlert( jqXHR.message, "success");
             displayTweet(jqXHR.tweet);
         }).fail(function (jqXHR) {
@@ -189,9 +192,10 @@ $().ready(function(){
     };
 
     function textLimitationCharacter(){
-        $("#textLenght").html( $(this).val().length );
-        if( $(this).val().length >= 140 ){
-            $(this).val($(this).val().substring(0, 139));
+        var textarea = $("textarea[name='inputTweet']");
+        $("#textLenght").html( textarea.val().length );
+        if( textarea.val().length >= 140 ){
+            textarea.val(textarea.val().substring(0, 139));
         }
     };
 
@@ -216,14 +220,19 @@ $().ready(function(){
             tweetDate.getFullYear() + " at " + tweetDate.toLocaleTimeString().toLowerCase() + " from " + tweet.username +
             "</span>";
 
-        $("ul.tweetWall").append("<li class=\"list-group-item tweet\" id=\"tweet-" + tweet.id + "\" >" +
+        $("ul.tweetWall").prepend("<li class=\"list-group-item tweet\" id=\"tweet-" + tweet.id + "\" >" +
             ( user.username == tweet.username ? actionBtn : "") + tweet.message + dateArea + "</li>");
     };
 
-    var getTweets = function(){
+    function refreshTweets(){
+        $("#wall h2").html('Tweets List ! <button class="btn btn-default refreshTweetWall right"><span class="glyphicon ' +
+            'glyphicon-refresh"></span> <span class="textBtn"></span></button>');
+        $(".theWall").html("Show my tweets").removeClass("theWall").addClass("myTweet");
+
+        $("ul.tweetWall").empty();
+
         $.get(urlDomain + "tweet/" + user.key, function(data){
-            if(!data[0]) console.log(null)
-            data.forEach(displayTweet)
+            data.forEach(displayTweet);
         }, "json");
     };
     var getUser = function() {
@@ -231,11 +240,20 @@ $().ready(function(){
             $(".emailProfil .profil").html(data.user.username);
             $(".firstnameProfil .profil").html(data.user.firstname);
             $(".lastnameProfil .profil").html(data.user.lastname);
+            $.get(urlDomain + "tweet/" + user.key + "/myTweets", function(data){
+                $(".nbTweetProfil .profil").html(data.length);
+            }, "json");
         }, "json");
     };
 
-    function refreshTweets(){
+    function showMyTweet(){
+        $("#wall h2").html('My Tweets List !');
+        $(".myTweet").html("Show the wall").removeClass("myTweet").addClass("theWall");
+
         $("ul.tweetWall").empty();
-        getTweets();
+
+        $.get(urlDomain + "tweet/" + user.key + "/myTweets", function(data){
+            data.forEach(displayTweet);
+        }, "json");
     }
 });

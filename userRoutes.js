@@ -66,6 +66,7 @@ module.exports = function() {
 
 
     });
+
     //Get User
     router.get("/:key", checkKey, function(req, res){
          var result  = db.userList.filter(function(user) {
@@ -94,7 +95,17 @@ module.exports = function() {
                 db.userList.splice(element.id, 1);
             }
         });
-        res.json({message: "User  deleted"}).end();
+        var indexList = [];
+        db.tweetList.forEach(function(tweet, index){
+            if (tweet.username == req.params.username){
+                indexList.push(index);
+            }
+        });
+        indexList.reverse().forEach(function(value){
+            db.tweetList.splice(value,1);
+        });
+
+        res.json({message: "User & tweets deleted"}).end();
     });
 
     return router;
